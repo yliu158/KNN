@@ -48,6 +48,17 @@ void KD_Tree::swap(vector<double>& first, vector<double>& second, int dimension)
 
 int main(int argc, char const *argv[]) {
   vector<vector<double> > testcase;
+  vector<double> row;
+  for (int i = 0; i < 100; ++i) {
+    row.clear();
+    for (int j = 0; j < 10; ++j) {
+      double n = (double)rand()/ RAND_MAX;
+      row.push_back(n);
+    }
+    testcase.push_back(row);
+  }
+  row.clear();
+  vector<double>().swap(row);
   KD_Tree t = KD_Tree();
   t.buildTree(testcase);
   vector<vector<double> >().swap(testcase);
