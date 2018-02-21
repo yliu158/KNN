@@ -12,7 +12,7 @@ public:
   void swap(vector<double>& first, vector<double>& second, int dimension);
 };
 
-Node* buildTree(vector<vector<double> >& input) {
+Node* KD_Tree::buildTree(vector<vector<double> >& input) {
   return constructorHelper(input, 0, root);
 }
 Node* KD_Tree::constructorHelper(vector<vector<double> >& input, int dim_index, Node* parent) {
@@ -48,10 +48,8 @@ void KD_Tree::swap(vector<double>& first, vector<double>& second, int dimension)
 
 int main(int argc, char const *argv[]) {
   vector<vector<double> > testcase;
-  KD_Tree t = KD_Tree(testcase);
-  for (int i = 0; i < 100; ++i) {
-
-  }
+  KD_Tree t = KD_Tree();
+  t.buildTree(testcase);
   vector<vector<double> >().swap(testcase);
   return 0;
 }
