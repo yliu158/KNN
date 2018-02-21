@@ -5,17 +5,17 @@ using namespace std;
 class KD_Tree{
 public:
   Node* root;
-  vector<vector<double> > data;
-  KD_Tree(vector<vector<double> >& input) {
-    data = vector<vector<double> > (input);
-  }
+  KD_Tree() {}
+  Node* buildTree(vector<vector<double> >& input);
   Node* constructorHelper(vector<vector<double> >& input, int dim_index, Node* parent);
   void sort(vector<vector<double> >& input, int start, int end, int dim_index);
   void swap(vector<double>& first, vector<double>& second, int dimension);
 };
 
+Node* buildTree(vector<vector<double> >& input) {
+  return constructorHelper(input, 0, root);
+}
 Node* KD_Tree::constructorHelper(vector<vector<double> >& input, int dim_index, Node* parent) {
-
   return new Node(0, parent);
 }
 
