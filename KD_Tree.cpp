@@ -1,17 +1,20 @@
 #include <vector>
 #include "Node.cpp"
 
+const int space_width = 6;
+
 class KD_Tree {
 public:
   vector<vector<double> > data;
-  int dimension = 5;
-  int size_of_data = 8;
   Node* root = NULL;
+  int hight = 0;
+  int dimension = 8;
+  int size_of_data = 20;
 
   KD_Tree() {
     randDataset();
-    root = buildTree(0, data.size()-1, 0, NULL);
     printMatrix();
+    root = buildTree(0, data.size()-1, 0, NULL, 0);
   }
   ~KD_Tree() {
     data.clear();
@@ -22,19 +25,19 @@ public:
   void swap(int first, int second);
   int partition(int left, int right, int dim_index, double pivot);
   void sort(int start, int end, int dim_index);
-  Node* buildTree(int start, int end, int dim_index, Node* parent);
+  Node* buildTree(int start, int end, int dim_index, Node* parent, int level);
   void printTree();
   void printTreeHelper(Node* node, int level);
   void printMatrix();
   void randDataset();
-
+  void readDataset();
 };
 
 
 void KD_Tree::printMatrix() {
-  for (int j = 0; j < data.size(); ++j) {
-    for (int i = 0; i < data[0].size(); ++i) {
-      cout << setfill(' ') << left << setw(13) << data[j][i];
+  for (vector<double> v: data) {
+    for (double n: v) {
+      cout << setfill(' ') << left << setw(space_width) << n;
     }
     cout << endl;
   }
@@ -56,6 +59,11 @@ void KD_Tree::randDataset() {
   row.shrink_to_fit();
   vector<double>().swap(row);
   return;
+  return;
+}
+
+void KD_Tree::readDataset() {
+
 }
 
 void KD_Tree::swap(int first, int second) {
@@ -91,8 +99,9 @@ void KD_Tree::sort(int start, int end, int dim_index) {
   return;
 }
 
-Node* KD_Tree::buildTree(int start, int end, int dim_index, Node* parent) {
+Node* KD_Tree::buildTree(int start, int end, int dim_index, Node* parent, int level) {
   if (start > end || start >= data.size() || start < 0 || end >= data.size() || end < 0) return NULL;
+  if (hight < level) hight = level;
   if (start == end) {
     return new Node(data[start][dim_index%dimension], parent);
   }
@@ -105,8 +114,8 @@ Node* KD_Tree::buildTree(int start, int end, int dim_index, Node* parent) {
   int head = mid+1;
   while (tail >= 0 && data[tail][dim_index] == line) --tail;
   while (head < data.size() && data[head][dim_index] == line) ++ head;
-  cur->left = buildTree(start, tail, dim_index+1, cur);
-  cur->right = buildTree(head, end, dim_index+1, cur);
+  cur->left = buildTree(start, tail, dim_index+1, cur, level+1);
+  cur->right = buildTree(head, end, dim_index+1, cur, level+1);
   return cur;
 }
 
@@ -121,12 +130,10 @@ void KD_Tree::printTreeHelper(Node* node, int level) {
     return;
   }
   printTreeHelper(node->left, level+1);
-  node->printNode(level);
+  node->printNode(level, hight);
   printTreeHelper(node->right, level+1);
   return;
 }
-
-
 
 int main(int argc, char const *argv[]) {
   srand(time(NULL));

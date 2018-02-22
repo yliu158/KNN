@@ -12,11 +12,11 @@ public:
     this->parent = parent;
     cuttingLine = num;
   }
-  void printNode(int level);
+  void printNode(int level, int hight);
 };
 
-void Node::printNode(int level) {
-  for (int i = 0; i < level; ++i) {
+void Node::printNode(int level, int hight) {
+  for (int i = 0; i < hight-level; ++i) {
     cout << setfill(' ') << setw(12) << " ";
   }
   cout <<cuttingLine << endl;
