@@ -1,19 +1,17 @@
 #include <vector>
 #include "Node.cpp"
 
-const int space_width = 6;
-
 class KD_Tree {
 public:
   vector<vector<double> > data;
+  int dimension = 8;
+  int size_of_data = 200;
   Node* root = NULL;
   int hight = 0;
-  int dimension = 8;
-  int size_of_data = 20;
 
   KD_Tree() {
     randDataset();
-    printMatrix();
+    // printMatrix();
     root = buildTree(0, data.size()-1, 0, NULL, 0);
   }
   ~KD_Tree() {
@@ -37,7 +35,7 @@ public:
 void KD_Tree::printMatrix() {
   for (vector<double> v: data) {
     for (double n: v) {
-      cout << setfill(' ') << left << setw(space_width) << n;
+      cout << setfill(' ') << left << setw(6) << n;
     }
     cout << endl;
   }
@@ -58,7 +56,6 @@ void KD_Tree::randDataset() {
   row.clear();
   row.shrink_to_fit();
   vector<double>().swap(row);
-  return;
   return;
 }
 
