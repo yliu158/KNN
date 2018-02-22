@@ -5,14 +5,17 @@ class KD_Tree {
 public:
   vector<vector<double> > data;
   int dimension = 5;
-  int size_of_data = 2;
-  Node* root;
+  int size_of_data = 8;
+  Node* root = NULL;
 
   KD_Tree() {
     randDataset();
     root = buildTree(0, data.size()-1, 0, NULL);
+    printMatrix();
   }
   ~KD_Tree() {
+    data.clear();
+    data.shrink_to_fit();
     vector<vector<double> >().swap(data);
   }
 
@@ -30,7 +33,7 @@ public:
 
 void KD_Tree::printMatrix() {
   for (int j = 0; j < data.size(); ++j) {
-    for (int i = 0; i < data[i].size(); ++i) {
+    for (int i = 0; i < data[0].size(); ++i) {
       cout << setfill(' ') << left << setw(13) << data[j][i];
     }
     cout << endl;
@@ -42,6 +45,7 @@ void KD_Tree::randDataset() {
   vector<double> row;
   for (int j = 0; j < size_of_data; ++j) {
     row.clear();
+    row.shrink_to_fit();
     vector<double>().swap(row);
     for (int i = 0; i < dimension; ++i) {
       row.push_back((double)(rand()%200));
@@ -49,6 +53,7 @@ void KD_Tree::randDataset() {
     data.push_back(row);
   }
   row.clear();
+  row.shrink_to_fit();
   vector<double>().swap(row);
   return;
 }
@@ -87,9 +92,10 @@ void KD_Tree::sort(int start, int end, int dim_index) {
 }
 
 Node* KD_Tree::buildTree(int start, int end, int dim_index, Node* parent) {
-  if (start > end) return NULL;
-  if (start == end) return new Node(data[start][dim_index%dimension], parent);
-  printMatrix();
+  if (start > end || start >= data.size() || start < 0 || end >= data.size() || end < 0) return NULL;
+  if (start == end) {
+    return new Node(data[start][dim_index%dimension], parent);
+  }
   sort(start, end, dim_index);
   dim_index %= dimension;
   int mid = (start+end)/2;
@@ -106,6 +112,7 @@ Node* KD_Tree::buildTree(int start, int end, int dim_index, Node* parent) {
 
 void KD_Tree::printTree() {
   printTreeHelper(root, 0);
+  return;
 }
 
 void KD_Tree::printTreeHelper(Node* node, int level) {
@@ -122,6 +129,7 @@ void KD_Tree::printTreeHelper(Node* node, int level) {
 
 
 int main(int argc, char const *argv[]) {
+  srand(time(NULL));
   KD_Tree t = KD_Tree();
   t.printTree();
   return 0;
